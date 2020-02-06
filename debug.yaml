@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+spec:
+  containers:
+  - image: bitnami/nginx
+    name: debug-container
+    volumeMounts:
+    - mountPath: /debug
+      name: debug-files
+  volumes:
+  - name: debug-files
+    emptyDir: {}
