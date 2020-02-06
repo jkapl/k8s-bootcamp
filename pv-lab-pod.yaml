@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-pod
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    env:
+      - name: MYSQL_ROOT_PASSWORD
+        value: "password"
+    image: mysql:5.6
+    volumeMounts:
+      - mountPath: "/var/lib/mysql"
+        name: my-sql-mount 
+    resources:
+      limits:
+        cpu: "500m"
+    ports:
+      - containerPort: 3306
+  volumes:
+  - name: my-sql-mount
+    persistentVolumeClaim:
+        claimName: mysql-pv-claim
