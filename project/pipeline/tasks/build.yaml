@@ -45,3 +45,5 @@ spec:
           $(outputs.resources.image.url):$SHORT_GIT_HASH \
           docker://$(outputs.resources.image.url):$SHORT_GIT_HASH
           echo "Successfully push $(outputs.resources.image.url):$SHORT_GIT_HASH"
+      securityContext:
+        privileged: true       
