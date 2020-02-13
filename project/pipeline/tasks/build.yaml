@@ -7,7 +7,7 @@ spec:
     params:
       - name: BUILDER_IMAGE
         description: The location of the buildah builder image.
-        default: quay.io/buildah/stable:v1.10.0
+        default: quay.io/buildah/stable:v1.9.0
       - name: DOCKERFILE
         description: Path to the Dockerfile to build
         default: ./Dockerfile
@@ -30,12 +30,13 @@ spec:
         - -c
         - |
           set -e
+          yum update && yum install fuse-overlayfs
           SHORT_GIT_HASH=$(cat .git/FETCH_HEAD | awk '{print substr($1,0,7)}')
           echo "SHORT_GIT_HASH = $SHORT_GIT_HASH"
           echo "Building Image $(outputs.resources.image.url):$SHORT_GIT_HASH"
+          sh -c 'echo hello; exit'
           buildah bud \
-          --tls-verify="false"
-          --layers \
+          --tls-verify="false" \
           -f $(inputs.params.DOCKERFILE) \
           -t $(outputs.resources.image.url):$SHORT_GIT_HASH \
           $(inputs.params.CONTEXT)
